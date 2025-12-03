@@ -102,5 +102,7 @@ if best_model_name != "Linear Regression":
 # -----------------------------------------------------------
 # SAVE BEST MODEL
 # -----------------------------------------------------------
-joblib.dump(best_model, "best_model.pkl")
+joblib.dump(results["Linear Regression"]["model"], "linear_model.pkl")
+joblib.dump(results["Random Forest"]["model"], "random_forest_model.pkl")
+joblib.dump(results["Gradient Boosting"]["model"], "gradient_boosting_model.pkl")
 st.success("💾 Model saved as best_model.pkl")
