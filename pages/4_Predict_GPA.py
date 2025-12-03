@@ -4,16 +4,27 @@ import joblib
 import numpy as np
 
 st.title("🎯 Predict Student GPA")
-st.write("Input student details to predict their GPA using the trained ML model.")
+st.write("Input student details and select a model to predict GPA.")
 
 # -----------------------------------------------------------
-# LOAD MODEL
+# LOAD MODELS
 # -----------------------------------------------------------
 @st.cache_data
-def load_model():
-    return joblib.load("best_model.pkl")
+def load_models():
+    models = {
+        "Linear Regression": joblib.load("linear_model.pkl"),
+        "Random Forest": joblib.load("random_forest_model.pkl"),
+        "Gradient Boosting": joblib.load("gradient_boosting_model.pkl")
+    }
+    return models
 
-model = load_model()
+models = load_models()
+
+# -----------------------------------------------------------
+# USER SELECT MODEL
+# -----------------------------------------------------------
+model_name = st.selectbox("Select Model", options=list(models.keys()))
+selected_model = models[model_name]
 
 # -----------------------------------------------------------
 # LOAD DATA (for defaults)
@@ -67,11 +78,7 @@ input_df = user_input_features()
 # -----------------------------------------------------------
 st.subheader("Predicted GPA")
 
-prediction = model.predict(input_df)[0]
-st.success(f"Predicted GPA: {prediction:.2f}")
+prediction = selected_model.predict(input_df)[0]
+st.success(f"Predicted GPA using {model_name}: {prediction:.2f}")
 
-# -----------------------------------------------------------
-# OPTIONAL: Confidence / Range
-# -----------------------------------------------------------
-st.info("⚡ Prediction is based on your trained model; actual GPA may vary.")
-
+st.info("⚡ Prediction is based on your selected model; actual GPA may vary.")
