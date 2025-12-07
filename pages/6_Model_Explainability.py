@@ -27,15 +27,25 @@ def load_model():
 model = load_model()
 
 # -------------------------------
-# ✅ Feature Selection
+# ✅ ✅ USE *EXACT SAME FEATURES AS TRAINING*
+# ⚠️ UPDATE ONLY THIS LIST IF NEEDED
 # -------------------------------
-features = ["Absences", "StudyTimeWeekly", "ParentalSupport"]
+features = [
+    "Absences",
+    "StudyTimeWeekly",
+    "ParentalSupport",
+    "Tutoring",
+    "Sports",
+    "Music",
+    "Volunteering"
+]
+
 X = df[features]
 
 # -------------------------------
-# ✅ SHAP KERNEL EXPLAINER (STABLE FIX)
+# ✅ SHAP KERNEL EXPLAINER (STABLE)
 # -------------------------------
-background = X.sample(50, random_state=42)
+background = X.sample(n=50, random_state=42)
 
 explainer = shap.KernelExplainer(model.predict, background)
 shap_values = explainer.shap_values(X[:50])
@@ -52,7 +62,7 @@ st.pyplot(fig)
 # -------------------------------
 # ✅ LOCAL STUDENT EXPLANATION
 # -------------------------------
-st.subheader("🎯 Individual Student Prediction Explanation")
+st.subheader("🎯 Individual Student Explanation")
 
 student_index = st.slider(
     "Select Student Index",
